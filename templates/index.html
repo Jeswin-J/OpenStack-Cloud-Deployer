@@ -1,0 +1,659 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>CDAC | Dashboard</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <link href= {% static "assets/img/cdac-logo.png" %}  rel="icon">
+  <link href={% static "assets/img/cdac-logo.png" %}  rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+  <!-- CSS Files -->
+  <link href ={% static "assets/vendor/animate.css/animate.min.css" %} rel="stylesheet">
+  <link href={% static "assets/vendor/aos/aos.css" %} rel="stylesheet">
+  <link href={% static "assets/vendor/bootstrap/css/bootstrap.min.css" %} rel="stylesheet">
+  <link href={% static "assets/vendor/bootstrap-icons/bootstrap-icons.css" %} rel="stylesheet">
+  <link href={% static "assets/vendor/boxicons/css/boxicons.min.css" %} rel="stylesheet">
+  <link href={% static "assets/vendor/glightbox/css/glightbox.min.css" %} rel="stylesheet">
+  <link href={% static "assets/vendor/remixicon/remixicon.css" %} rel="stylesheet">
+  <link href={% static "assets/vendor/swiper/swiper-bundle.min.css" %} rel="stylesheet">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" />
+
+  <link href={% static "assets/css/style.css" %} rel="stylesheet">
+
+  <style>
+
+    #btn, #btn-confirm, .save-btn{
+      background-color: rgb(51, 54, 74);
+      font-family: "Raleway", sans-serif;
+      font-weight: 500;
+      font-size: 18px;
+      letter-spacing: 1px;
+      padding: 12px 32px;
+      border-radius: 50px;
+      line-height: 1;
+      transition: 0.5s;
+      color: #dcc960;
+      border: 2px solid #dcc960;
+    }
+
+    #btn:hover, #btn-confirm:hover, .save-btn:hover{
+      background-color: #dcc960;
+      color: black;
+      text-decoration: none;
+    }
+
+    .side-panel-btn{
+      background-color: rgb(51, 54, 74);
+      font-family: "Raleway", sans-serif;
+      font-weight: 500;
+      font-size: 18px;
+      letter-spacing: 1px;
+      padding: 12px 12px ;
+      border-radius: 5px;
+      line-height: 1;
+      transition: 0.5s;
+      color: #dcc960;
+      border: 2px solid #dcc960;
+      width : 180px ;
+    }
+
+    .form-group{
+      width : 400px ;
+      height : 100% ;
+    }
+
+    body{
+      display : block ;
+      overflow : hidden ;
+    }
+
+    .button-div{
+      display : none ;
+      transition : opacity 0.5s ease-in-out ;
+    }
+
+    .button-div.active{
+      opacity : 1 ;
+    }
+
+    .form-control:focus{
+      outline: none;
+      box-shadow: 0 0 15px #dcc960;
+    }
+
+    .pre-btn{
+      width : 100% ;
+      background-color: transparent;
+      background-image: url('/static/assets/img/left_icon.png');
+      border-radius : 50%;
+      width: 40px;
+      border: none;
+      height: 40px;
+      padding : 0 ;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    .pre-btn:active{
+      margin-right: 7px;
+    }
+
+    .nxt-btn{
+      width : 100% ;
+      background-color: transparent;
+      background-image: url('/static/assets/img/right_icon.png');
+      border-radius : 50%;
+      border: none;
+      width: 40px;
+      height: 40px;
+      padding : 0 ;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    .nxt-btn:active{
+      margin-left: 7px;
+    }
+
+    #compute_node_counts {
+      display : flex ;
+      align-items : center ;
+      justify-content : center ;
+      margin-top : 30% ;
+      margin-bottom : 33%  ;
+
+    }
+
+    #compute_form{
+      display : flex ;
+      align-items : center ;
+      justify-content : center ;
+    }
+
+    #previous-section, #nxt-section {
+      display : flex ;
+      align-items : center ;
+      justify-content : center ;
+      padding-bottom : 90px ;
+    }
+
+    @keyframes slide-out {
+      0% { opacity: 1; transform: translateY(0); }
+      100% { opacity: 0; transform: translateY(100%); }
+  }
+
+  </style>
+
+</head>
+
+<body>
+
+<section id="hero">
+    <div class="container" data-aos="fade-in">
+        <div class="row">
+            <div class="col-lg-2">
+              <br>
+              <a href="index.html"><img src= {% static "assets/img/cdac-logo.png" %}  alt="" class="img-fluid" style = "width : auto ; height : 100px;"></a>
+                <div style = "margin-top : 50% ; margin-bottom : 50%; margin-left : 25px ;">
+                  <p style = "display : flex ; flex-direction : column ; align-items : center ; ">
+                    <button class = "side-panel-btn" id = "controllerbtn" type = "submit">CONTROLLER</button>
+                  </p>
+                  <br>
+                  <p style = "display : flex ; flex-direction : column ; align-items : center ;">
+                    <button class = "side-panel-btn" id = "computebtn" type = "submit" >COMPUTE</button>
+                  </p>
+                  <br>
+                  <p style = "display : flex ; flex-direction : column ; align-items : center ;">
+                    <button class = "side-panel-btn" id = "networkbtn" type = "submit" >NETWORK</button>
+                  </p>
+                  <br>
+                  <p style = "display : flex ; flex-direction : column ; align-items : center ;">
+                    <button class = "side-panel-btn" id = "storagebtn" type = "submit">STORAGE</button>
+                  </p>
+                </div>
+            </div>
+            <div class="col-lg-8" id=center-content>
+              <div>
+                <br>
+                <h1 style = "padding-top : 5px ; text-align : center; color : #dcc960;">Meghdoot Cloud Deployer</h1>
+                <br>
+              </div>
+
+              <div id = "welcomeMsgDiv" style = "display : flex ; flex-direction : column ; align-items : center ;">
+                <h3 style = "padding-top : 50px ; padding-bottom : 20px ; text-align : center; color : #dcc960;">Simplifing Cloud Deployments</h3>
+                <img src = "{% static 'assets/img/cloud_deployment_img.png' %}" style = "width : 60%; height : auto; padding-top : 0% ; padding-bottom : 10% ;">
+              </div>
+
+
+ <!-----------CONTROLLER--------------->
+
+
+
+              <div id = "controller-div" class = "button-div">
+                <form action = "/backend_exec/execute_script/" method = "post" style = "display : flex ; flex-direction : column ; align-items : center ;"> {% csrf_token %}
+                  <!--<div class="form-group" data-aos="fade-in" data-aos-delay="300" style = "padding-bottom : 15px ; padding-top: 20px;">
+                    <p style = "width : 100%"> 
+                      Bridge
+                      <select class="form-control custom-combo-box" id="combo-box">
+                        <option value="option1">Option 1</option>
+                        <option value="option2">Option 2</option>
+                      </select>
+                    </p>
+                  </div>-->
+                  <div class="form-group" data-aos="fade-in" data-aos-delay="300" style = " padding-top: 60px ; padding-bottom : 15px ;">
+                    <p style = "width : 100%"> 
+                    Network Interface 1
+                    <input type="text" class="form-control" name="network_interface_1"  required>
+                    </p>
+                  </div>
+                  <div class="form-group" data-aos="fade-in" data-aos-delay="300" style = " padding-bottom : 15px ;">
+                    <p style = "width : 100%"> 
+                    Network Interface 2
+                    <input type="text" class="form-control" name="network_interface_2"  required>
+                    </p>
+                  </div>
+                  <div class="form-group" data-aos="fade-in" data-aos-delay="300" style = " padding-bottom : 15px ;">
+                    <p style = "width : 100%"> 
+                    IP Address
+                    <input type="text" class="form-control" name="IP_addr"  required>
+                    </p>
+                  </div>
+                  <div class="form-group" data-aos="fade-in" data-aos-delay="300" style = " padding-bottom : 50px ;">
+                    <p style = "width : 100%"> 
+                      Storage Device (/dev/xxx)
+                    <input type="text" class="form-control" name="storage_device"  required>
+                    </p>
+                  </div>
+                  <div class="form-group", data-aos="fade-in", data-aos-delay="300">
+                    <p style = "display : flex ; flex-direction : column ; align-items : center ; width : 100% ; padding-bottom : 55px ;">
+                    <button id = "btn" type = "submit">CREATE</button>
+                    </p>
+                  </div>
+                </form>
+              </div>
+
+
+
+<!-----------COMPUTE--------------->
+
+
+
+              <div id = "compute-div" class = "button-div">
+                <div class = "row"> 
+                  <div class="col-8 col-lg-2" id = "previous-section">
+                    {% if nodes > 1 %}
+                    <button class="pre-btn" id = "previous-btn" ></button>
+                    {% elif nodes == 1%}
+                    <button class="pre-btn" id = "previous-btn" style = "visibility: hidden;"></button>
+                    {% endif %}
+                  </div>
+                  <div class="col-8 col-lg-8">
+                    <div id = "compute_node_counts">
+                      <script>
+                        document.getElementById("compute_node_counts").style.display = "flex" ;
+                      </script>
+                      <form action = "/backend_exec/get_compute_count/" method = "post" style = "display : flex ; flex-direction : column ; align-items : center ;"> {% csrf_token %}
+                        <div class="form-group" data-aos="fade-in" data-aos-delay="300" style = "padding-top : 20px ; padding-bottom : 25px ;">
+                          <p style = "width : 100%"> 
+                            No.of Compute Nodes
+                          <input type="number" min = "1" step = "1" default = "1" class="form-control" name="compute_node_counts"  required>
+                          </p>
+                        </div>
+                        <div class="form-group", data-aos="fade-in", data-aos-delay="300">
+                          <p style = "display : flex ; flex-direction : column ; align-items : center ; width : 100% ; padding-bottom : 40px ;">
+                          <button id = "btn-confirm"  class = "confirmbtn" type = "submit">CONFIRM</button>
+                          </p>
+                        </div>
+                      </form>
+                      {% if btn_clicked%}
+                        <script>
+
+                          document.getElementById('computebtn').style.backgroundColor = "#dcc960" ;
+                          document.getElementById('computebtn').style.color = "#000" ;
+                          document.getElementById('computebtn').style.textDecoration = "none" ;
+
+                          document.getElementById('compute-div').style.display = "block" ;
+                          document.getElementById('compute-div').style.animation = "fadeIn 0.3s ease-in-out" ;
+                          document.getElementById('compute-div').classList.add("active") ;
+
+                          document.getElementById('welcomeMsgDiv').style.display = "none";
+
+                        </script>
+                      {% endif %}
+                    </div>
+
+                    
+                    <div id = "compute_form">
+                      {% for node in compute_nodes %}
+                          <script>
+                            document.getElementById("compute_form").style.display = "flex" ;
+                            document.getElementById("compute_node_counts").style.display = "none" ;
+                          </script>
+                          
+                          <div id = "{{node}}">
+                            <form action = "/backend_exec/execute_compute_script/" method = "post" {% if not forloop.last %}target="_blank" {% endif %} style = "display : flex ; flex-direction : column ; align-items : center ;"> {% csrf_token %}
+                              <h4 style = "padding-top : 15px ; text-align : center; color : #dcc960;">Compute Node {{node}}</h4>
+                              <div class="form-group" data-aos="fade-in" data-aos-delay="300" style = "padding-bottom : 15px ;">
+                                <p style = "width : 100%"> 
+                                  Compute Username
+                                <input id = "compute-username-{{node}}" type="text" class="form-control" name="compute_username-{{node}}"  required>
+                                </p>
+                              </div>
+                              <div class="form-group" data-aos="fade-in" data-aos-delay="300" style = " padding-bottom : 15px ;">
+                                <p style = "width : 100%"> 
+                                  Compute hostname
+                                <input id = "compute-hostname-{{node}}" type="text" class="form-control" name="compute_hostname-{{node}}"  required>
+                                </p>
+                              </div>
+                              <div class="form-group" data-aos="fade-in" data-aos-delay="300" style = " padding-bottom : 15px ;">
+                                <p style = "width : 100%"> 
+                                  Network Interface 1
+                                <input id = "compute-network-interface-1-{{node}}" type="text" class="form-control" name="compute_network_interface_1-{{node}}"  required>
+                                </p>
+                              </div>
+                              <div class="form-group" data-aos="fade-in" data-aos-delay="300" style = " padding-bottom : 15px ;">
+                                <p style = "width : 100%"> 
+                                  Network Interface 2
+                                <input id = "compute-network-interface-2-{{node}}" type="text" class="form-control" name="compute_network_interface_2-{{node}}"  required>
+                                </p>
+                              </div>
+                              <div class="form-group" data-aos="fade-in" data-aos-delay="300" style = " padding-bottom : 15px ;">
+                                <p style = "width : 100%"> 
+                                  Compute IP address
+                                <input id = "compute-ip-addr-{{node}}" type="text" class="form-control" name="compute_ip_addr-{{node}}" pattern = "^(\d{1,3}\.){3}\d{1,3}$" required>
+                                </p>
+                              </div>
+                              <div class="form-group", data-aos="fade-in", data-aos-delay="300">
+                                <p style = "display : flex ; flex-direction : column ; align-items : center ; width : 100% ; padding-bottom : 20px ;">
+                                  
+                                  {% if forloop.last %}
+                                    <button id = "btn" type = "submit" name = "create-btn">CREATE</button>
+                                  {% else %}
+                                    <button class = "save-btn" id = "save-btn-{{node}}" type = "submit" name = "save-btn-{{node}}">SAVE</button>
+                                  {% endif %}
+                                  
+                                </p>
+                              </div>
+                            </form>
+                          </div>
+                      {% endfor %}
+                    </div>
+                  </div>
+                  <div class="col-8 col-lg-2" id = "nxt-section">
+                    
+                    {% if nodes > 1 %}
+                      <button class="nxt-btn" id = "next-btn"></button>
+                      <!--<script>
+                        document.getElementById('next-btn').addEventListener('click', () => {
+                          console.log(`next-btn clicked`) ;
+                          document.getElementById('save-btn').click() ;
+                        }) ;
+                      </script>-->
+                    {% elif nodes == 1%}
+                      <button class="nxt-btn" id = "next-btn" style = "visibility: hidden;"></button>
+                    {% endif %}
+                  </div>
+              </div>
+              </div>
+
+
+<!-----------NETWORK--------------->
+
+
+              <div id = "network-div" class = "button-div">
+                <form action = "/backend_exec/execute_script/" method = "post" style = "display : flex ; flex-direction : column ; align-items : center ;"> {% csrf_token %}
+                  <div class="form-group" data-aos="fade-in" data-aos-delay="300" style = "padding-top : 60px ; padding-bottom : 15px ;">
+                    <p style = "width : 100%"> 
+                    Network Interface 5
+                    <input type="text" class="form-control" name="network_interface_1"  required>
+                    </p>
+                  </div>
+                  <div class="form-group" data-aos="fade-in" data-aos-delay="300" style = " padding-bottom : 15px ;">
+                    <p style = "width : 100%"> 
+                    Network Interface 6
+                    <input type="text" class="form-control" name="network_interface_2"  required>
+                    </p>
+                  </div>
+                  <div class="form-group" data-aos="fade-in" data-aos-delay="300" style = " padding-bottom : 15px ;">
+                    <p style = "width : 100%"> 
+                    IP Address
+                    <input type="text" class="form-control" name="IP_addr"  required>
+                    </p>
+                  </div>
+                  <div class="form-group" data-aos="fade-in" data-aos-delay="300" style = " padding-bottom : 50px ;">
+                    <p style = "width : 100%"> 
+                      Storage Device (/dev/xxx)
+                    <input type="text" class="form-control" name="storage_device"  required>
+                    </p>
+                  </div>
+                  <div class="form-group", data-aos="fade-in", data-aos-delay="300">
+                    <p style = "display : flex ; flex-direction : column ; align-items : center ; width : 100% ; padding-bottom : 55px ;">
+                    <button id = "btn" type = "submit">CREATE</button>
+                    </p>
+                  </div>
+                </form>
+              </div>
+
+
+<!-----------STORAGE--------------->
+
+
+              <div id = "storage-div" class = "button-div">
+                <form action = "/backend_exec/execute_script/" method = "post" style = "display : flex ; flex-direction : column ; align-items : center ;"> {% csrf_token %}
+                  <div class="form-group" data-aos="fade-in" data-aos-delay="300" style = "padding-top : 60px ; padding-bottom : 15px ;">
+                    <p style = "width : 100%"> 
+                    Network Interface 7
+                    <input type="text" class="form-control" name="network_interface_1"  required>
+                    </p>
+                  </div>
+                  <div class="form-group" data-aos="fade-in" data-aos-delay="300" style = " padding-bottom : 15px ;">
+                    <p style = "width : 100%"> 
+                    Network Interface 8
+                    <input type="text" class="form-control" name="network_interface_2"  required>
+                    </p>
+                  </div>
+                  <div class="form-group" data-aos="fade-in" data-aos-delay="300" style = " padding-bottom : 15px ;">
+                    <p style = "width : 100%"> 
+                    IP Address
+                    <input type="text" class="form-control" name="IP_addr"  required>
+                    </p>
+                  </div>
+                  <div class="form-group" data-aos="fade-in" data-aos-delay="300" style = " padding-bottom : 50px ;">
+                    <p style = "width : 100%"> 
+                      Storage Device (/dev/xxx)
+                    <input type="text" class="form-control" name="storage_device"  required>
+                    </p>
+                  </div>
+                  <div class="form-group", data-aos="fade-in", data-aos-delay="300">
+                    <p style = "display : flex ; flex-direction : column ; align-items : center ; width : 100% ; padding-bottom : 55px ;">
+                    <button id = "btn" type = "submit">CREATE</button>
+                    </p>
+                  </div>
+                </form>
+              </div>
+            </div>
+            <div class="col-lg-2" style = "margin-top : 15px ;">
+              {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissable fade show" id = "alert-message" role="alert" style="width: 225px; position: relative; display: flex; flex-direction: row;">
+                  {{ message }}
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" style="position: absolute; top: 5px; right: 5px;"></button>
+                </div>
+                <script>
+                  
+                  var div = document.getElementById('alert-message');
+
+                  div.style.display = "flex";
+                  setTimeout(function() {
+                      div.style.animation = "slide-out 3s ease-in-out forwards";
+                      div.style.display = "none";
+                  }, 3000);
+                </script>
+              {% endfor %}
+            </div>
+        </div>
+    </div>
+
+</section>
+
+  <div style = "background : #2a2c39 ;">
+    <svg class="hero-waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28 " preserveAspectRatio="none">
+      <defs>
+        <path id="wave-path" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z">
+      </defs>
+      <g class="wave1">
+        <use xlink:href="#wave-path" x="50" y="3" fill="rgba(255,255,255, .1)">
+      </g>
+      <g class="wave2">
+        <use xlink:href="#wave-path" x="50" y="0" fill="rgba(255, 255, 255, .2)">
+      </g>
+      <g class="wave3">
+        <use xlink:href="#wave-path" x="50" y="9" fill="#dcc960">
+      </g>
+    </svg> </div>
+  <!-- JS Files -->
+  <script src={% static "assets/vendor/aos/aos.js" %}></script>
+  <script src={% static "assets/vendor/bootstrap/js/bootstrap.bundle.min.js" %}></script>
+  <script src={% static "assets/vendor/glightbox/js/glightbox.min.js" %}></script>
+  <script src={% static "assets/vendor/isotope-layout/isotope.pkgd.min.js" %}></script>
+  <script src={% static "assets/vendor/swiper/swiper-bundle.min.js" %}></script>
+  <script src={% static "assets/vendor/php-email-form/validate.js" %}></script>
+
+  <script src={% static "assets/js/main.js" %}></script>
+
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+  <script>
+
+    document.addEventListener("DOMContentLoaded", function() {
+
+      var buttons = [
+        document.getElementById("controllerbtn"),
+        document.getElementById("computebtn"),
+        document.getElementById("networkbtn"),
+        document.getElementById("storagebtn"),
+      ];
+
+      var divs = [
+        document.getElementById("welcomeMsgDiv"),
+        document.getElementById("controller-div"),
+        document.getElementById("compute-div"),
+        document.getElementById("network-div"),
+        document.getElementById("storage-div"),
+      ];
+
+      // Function to hide all the divs
+      function hideAllDivs() {
+        divs.forEach(function(div) {
+          div.style.display = "none";
+        });
+      }
+
+      // Function to reset button styles
+      function resetButtonStyles() {
+        buttons.forEach(function(button) {
+          button.style.backgroundColor = "";
+          button.style.color = "";
+          button.style.textDecoration = "";
+        });
+      }
+
+      buttons.forEach(function(button, index) {
+        button.addEventListener("click", function() {
+          hideAllDivs();
+
+          // Show the div for the clicked button
+          var currentDiv = document.querySelector(".button-div.active");
+          if(currentDiv)
+          {
+            currentDiv.style.animation = "fadeOut 0.3s ease-in-out";
+            setTimeout(function() {
+              currentDiv.style.display = "none";
+              currentDiv.style.animation = "";
+              currentDiv.classList.remove("active");
+
+              // Show the div for the clicked button
+              divs[index + 1 ].style.display = "block";
+              divs[index + 1 ].style.animation = "fadeIn 0.3s ease-in-out";
+              divs[index + 1 ].classList.add("active");
+            }, 300);
+          }
+
+          divs[index + 1 ].style.display = "block";
+          divs[index + 1 ].style.animation = "fadeIn 0.3s ease-in-out";
+          divs[index + 1 ].classList.add("active");
+
+          // Reset button styles for all buttons
+          resetButtonStyles();
+
+          // Set styles for the clicked button
+          button.style.backgroundColor = "#dcc960";
+          button.style.color = "#000";
+          button.style.textDecoration = "none";
+
+        });
+      });
+    });
+
+    var forms = '{{compute_nodes}}';
+    var formLength = JSON.parse(forms);
+    var actLen = formLength.length;
+    var flag = false ;
+    console.log(forms);
+    console.log(formLength);
+    console.log(actLen);
+    var index = 1;
+    hidingOtherForms() ;
+    document.getElementById(formLength[0]).style.display = "flex";
+
+    document.getElementById("previous-btn").addEventListener('click', function() {
+      if (index > 1) {
+        index--;
+        console.log(index);
+        hidingOtherForms();
+        document.getElementById(formLength[index-1]).style.display = "flex";
+      }
+    });
+
+    function autoSaveForNxtBtn(){
+      console.log(`next-btn clicked`) ;
+      /*document.getElementById('save-btn').click() ;
+      flag = true ;
+      console.log(`flag inside func value : ${flag}`) ;
+      document.getElementById('next-btn').removeEventListener('click', autoSaveForNxtBtn);*/
+      $('#next-btn').click(function() {
+        document.getElementById(`save-btn-${{index}}`).click() ;
+        flag = true; // Update the flag when the button is clicked
+      })
+        console.log('Button clicked');
+    //});
+    }
+
+    document.getElementById("next-btn").addEventListener('click', function() {
+      if (index < actLen) {
+        //ocument.getElementById('next-btn').addEventListener('click', autoSaveForNxtBtn) ;
+        //autoSaveForNxtBtn() ;
+
+        /*if(flag) {
+          flag = false ;
+          console.log(`flag inside if value : ${flag}`) ;*/
+          var computeUsername = "compute-username-" + index ;
+          var computeHostname = "compute-hostname-" + index ;
+          var computeNetworkInterface1 = "compute-network-interface-1-" + index ;
+          var computeNetworkInterface2 = "compute-network-interface-2-" + index ;
+          var computeIpAddr = "compute-ip-addr-" + index ;
+          var elementId = "save-btn-" + index;
+          //document.getElementById(elementId).click() ;
+
+          if(document.getElementById(computeUsername).checkValidity() && 
+              document.getElementById(computeHostname).checkValidity() && 
+              document.getElementById(computeNetworkInterface1).checkValidity() && 
+              document.getElementById(computeNetworkInterface2).checkValidity() && 
+              document.getElementById(computeIpAddr).checkValidity()){
+
+            document.getElementById(elementId).click() ;
+            index++;
+            console.log(index);
+            hidingOtherForms();
+            document.getElementById(formLength[index-1]).style.display = "flex";
+          }
+          else{
+            document.getElementById(elementId).click() ;
+          }
+          /*index++;
+          console.log(index);
+          hidingOtherForms();
+          document.getElementById(formLength[index-1]).style.display = "flex";*/
+        //}
+       /* else{
+          document.getElementById('save-btn').click() ;
+          autoSaveForNxtBtn() ;
+        }*/
+      }
+    });
+
+    function hidingOtherForms() {
+      for (var i = 0; i < formLength.length; i++) {
+        var form = document.getElementById(formLength[i]);
+        form.style.display = "none";
+      }
+    }
+
+  </script>
+
+</body>
+
+</html>

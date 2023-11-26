@@ -1,0 +1,14 @@
+{% load static %}
+<body>
+    <img src = {% static 'assets/img/LoadingImage.jpg' %} style = "padding-left : 35% ;">
+
+    <script>
+        window.onload = function() {
+            setTimeout(closeWindow, 300); // Close window after 1 seconds
+        };
+
+        function closeWindow() {
+            window.close(); // Close the current window or tab
+        }
+    </script>
+</body>
